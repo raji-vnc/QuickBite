@@ -1,4 +1,4 @@
-
+import os
 
 from pathlib import Path
 
@@ -57,6 +57,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'orders.context_processors.cart_count',
             ],
         },
     },
@@ -129,3 +130,9 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
+
+RAZORPAY_KEY_ID = "key_id,key_secret"
+RAZORPAY_KEY_SECRET = "rzp_test_RgkWVsJCySoPiP,NDZCL9JjWcJO5UF1DpNurTYZ"
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

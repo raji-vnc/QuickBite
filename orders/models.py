@@ -37,3 +37,15 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"{self.item.name} x {self.quantity}"
+    
+
+class Coupon(models.Model):
+    code=models.CharField(max_length=50,unique=True)
+    discount_type=models.CharField(max_length=10,choices=[('percent','percentage'),('flat','Flat')],default='percent')
+    discount_value=models.FloatField()
+    min_amount=models.FloatField(default=0)
+    is_active=models.BooleanField(default=True)
+    expiry_date=models.DateField()
+
+    def __str__(self):
+        return self.code

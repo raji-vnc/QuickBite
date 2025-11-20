@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Restaurant Settings - QuickBite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen p-6">
+
+<div class="max-w-2xl mx-auto bg-white shadow-lg rounded-xl p-8">
+
+    <h1 class="text-3xl font-bold mb-6">Restaurant Settings</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Name -->
+        <label class="block font-semibold mb-1">Restaurant Name</label>
+        <input type="text" name="name" value="{{ restaurant.name }}"
+               class="w-full border p-3 rounded-xl mb-4">
+
+        <!-- Address -->
+        <label class="block font-semibold mb-1">Address</label>
+        <textarea name="address" rows="3"
+                  class="w-full border p-3 rounded-xl mb-4">{{ restaurant.address }}</textarea>
+
+        <!-- Phone -->
+        <label class="block font-semibold mb-1">Phone</label>
+        <input type="text" name="phone" value="{{ restaurant.phone }}"
+               class="w-full border p-3 rounded-xl mb-4">
+
+        <!-- Opening Time -->
+        <label class="block font-semibold mb-1">Opening Time</label>
+        <input type="time" name="open_time" value="{{ restaurant.open_time }}"
+               class="w-full border p-3 rounded-xl mb-4">
+
+        <!-- Closing Time -->
+        <label class="block font-semibold mb-1">Closing Time</label>
+        <input type="time" name="close_time" value="{{ restaurant.close_time }}"
+               class="w-full border p-3 rounded-xl mb-4">
+
+        <!-- Logo -->
+        <label class="block font-semibold mb-1">Logo</label>
+        <input type="file" name="logo" class="w-full mb-4">
+
+        {% if restaurant.logo %}
+        <img src="{{ restaurant.logo.url }}" class="h-24 w-24 rounded-lg mb-4">
+        {% endif %}
+
+        <button class="w-full bg-red-500 text-white py-3 rounded-xl text-lg hover:bg-red-600">
+            Save Changes
+        </button>
+    </form>
+
+    <a href="/restaurant/dashboard/" 
+       class="block text-center mt-6 text-gray-500 hover:text-gray-700">← Back to Dashboard</a>
+
+</div>
+
+</body>
+</html>

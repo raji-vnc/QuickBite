@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Tracking - QuickBite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+
+<div class="max-w-3xl mx-auto mt-10 bg-white shadow p-6 rounded-xl">
+
+    <h1 class="text-2xl font-bold mb-5">Order Tracking</h1>
+
+    <!-- Order ID -->
+    <p class="text-gray-600 mb-4">Order ID: #{{ order.id }}</p>
+
+    <!-- Status Timeline -->
+    <div class="relative border-l-4 border-red-500 ml-4">
+
+        <!-- PENDING -->
+        <div class="mb-10 ml-6">
+            <div class="absolute -left-5 w-10 h-10 rounded-full flex items-center justify-center 
+                        {{ order.status == 'pending' or order.status != 'pending'|yesno:'bg-red-500 text-white,bg-red-200 text-gray-700' }}">
+                1
+            </div>
+            <h3 class="text-lg font-semibold">Order Placed</h3>
+            <p class="text-gray-500 text-sm">Your order has been placed successfully.</p>
+        </div>
+
+        <!-- ACCEPTED -->
+        <div class="mb-10 ml-6">
+            <div class="absolute -left-5 w-10 h-10 rounded-full flex items-center justify-center
+                        {% if order.status in 'accepted,preparing,out_for_delivery,delivered' %}
+                            bg-red-500 text-white
+                        {% else %}
+                            bg-red-200 text-gray-700
+                        {% endif %}">
+                2
+            </div>
+            <h3 class="text-lg font-semibold">Restaurant Accepted</h3>
+            <p class="text-gray-500 text-sm">Restaurant confirmed your order.</p>
+        </div>
+
+        <!-- PREPARING -->
+        <div class="mb-10 ml-6">
+            <div class="absolute -left-5 w-10 h-10 rounded-full flex items-center justify-center
+                        {% if order.status in 'preparing,out_for_delivery,delivered' %}
+                            bg-red-500 text-white
+                        {% else %}
+                            bg-red-200 text-gray-700
+                        {% endif %}">
+                3
+            </div>
+            <h3 class="text-lg font-semibold">Preparing Food</h3>
+            <p class="text-gray-500 text-sm">Your delicious food is being prepared.</p>
+        </div>
+
+        <!-- OUT FOR DELIVERY -->
+        <div class="mb-10 ml-6">
+            <div class="absolute -left-5 w-10 h-10 rounded-full flex items-center justify-center
+                        {% if order.status in 'out_for_delivery,delivered' %}
+                            bg-red-500 text-white
+                        {% else %}
+                            bg-red-200 text-gray-700
+                        {% endif %}">
+                4
+            </div>
+            <h3 class="text-lg font-semibold">Out For Delivery</h3>
+            <p class="text-gray-500 text-sm">Your rider is on the way.</p>
+        </div>
+
+        <!-- DELIVERED -->
+        <div class="ml-6">
+            <div class="absolute -left-5 w-10 h-10 rounded-full flex items-center justify-center
+                        {% if order.status == 'delivered' %}
+                            bg-green-500 text-white
+                        {% else %}
+                            bg-red-200 text-gray-700
+                        {% endif %}">
+                ✔
+            </div>
+            <h3 class="text-lg font-semibold">Delivered</h3>
+            <p class="text-gray-500 text-sm">Your order has been delivered.</p>
+        </div>
+    </div>
+
+    <a href="/" class="mt-8 block text-center bg-red-500 text-white py-3 rounded-xl hover:bg-red-600">
+        Back to Home
+    </a>
+
+</div>
+
+</body>
+</html>

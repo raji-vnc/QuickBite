@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Restaurant Approval</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+
+<div class="max-w-5xl mx-auto">
+
+    <h1 class="text-2xl font-bold mb-6">Pending Restaurant Approvals</h1>
+
+    {% if pending %}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            {% for r in pending %}
+            <div class="bg-white shadow p-6 rounded-xl">
+
+                <img src="{{ r.logo.url }}" class="h-40 w-full object-cover rounded-xl">
+
+                <h2 class="text-xl font-bold mt-4">{{ r.name }}</h2>
+                <p class="text-gray-600">{{ r.address }}</p>
+                <p class="text-gray-600">{{ r.phone }}</p>
+
+                <a href="/admin/restaurant/approve/{{ r.id }}/"
+                   class="block mt-4 bg-green-500 text-white py-2 rounded-xl text-center">
+                    Approve
+                </a>
+
+                <a href="/admin/restaurant/reject/{{ r.id }}/"
+                   class="block mt-2 bg-red-500 text-white py-2 rounded-xl text-center">
+                    Reject
+                </a>
+
+            </div>
+            {% endfor %}
+
+        </div>
+    {% else %}
+        <p class="text-gray-500 text-lg">No pending restaurants.</p>
+    {% endif %}
+</div>
+
+</body>
+</html>

@@ -30,7 +30,7 @@ class CartItemSerializer(serializers.ModelSerializer):
         fields=['id','item','item_name','item_price','item_image','quantity']    
 
 class OrderItemSerializer(serializers.ModelSerializer):
-    item_name=serializers.CharField('item.name',read_only=True)
+    item_name=serializers.CharField(source='item.name',read_only=True)
     item_price=serializers.DecimalField(source='item.price',read_only=True,max_digits=10,decimal_places=2)
 
     class Meta:

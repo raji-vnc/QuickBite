@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Restaurant Dashboard - QuickBite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+{% if not restaurant.is_approved %}
+<div class="bg-yellow-100 p-4 text-yellow-700 rounded-xl mb-6 text-center">
+    Your restaurant is waiting for admin approval.
+</div>
+{% endif %}
+
+<div class="max-w-6xl mx-auto mt-10">
+
+    <h1 class="text-3xl font-bold mb-6">Welcome, {{ restaurant.name }}</h1>
+
+    <!-- SECTIONS -->
+    <div class="grid grid-cols-3 gap-6">
+
+        <!-- Manage Menu -->
+        <a href="/restaurant/menu/manage/"
+           class="bg-white shadow p-6 rounded-xl hover:shadow-lg text-center">
+            <h2 class="text-xl font-semibold">Manage Menu</h2>
+            <p class="text-gray-500 text-sm mt-2">Add or update food items</p>
+        </a>
+
+        <!-- Manage Orders -->
+        <a href="/restaurant/orders/"
+           class="bg-white shadow p-6 rounded-xl hover:shadow-lg text-center">
+            <h2 class="text-xl font-semibold">Incoming Orders</h2>
+            <p class="text-gray-500 text-sm mt-2">Accept & update order status</p>
+        </a>
+
+        <!-- Settings -->
+        <a href="/restaurant/settings/"
+           class="bg-white shadow p-6 rounded-xl hover:shadow-lg text-center">
+            <h2 class="text-xl font-semibold">Settings</h2>
+            <p class="text-gray-500 text-sm mt-2">Update restaurant details</p>
+        </a>
+
+    </div>
+<a href="/restaurant/analytics/"
+   class="bg-white shadow p-6 rounded-xl hover:shadow-lg text-center">
+    <h2 class="text-xl font-semibold">Analytics</h2>
+    <p class="text-gray-500 mt-2">View sales reports</p>
+</a>
+
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+    <a href="/restaurant/menu/manage/"
+       class="bg-white p-6 rounded-xl shadow text-center hover:shadow-lg">
+        <h2 class="text-xl font-bold">Manage Menu</h2>
+    </a>
+
+    <a href="/restaurant/orders/"
+       class="bg-white p-6 rounded-xl shadow text-center hover:shadow-lg">
+        <h2 class="text-xl font-bold">Orders</h2>
+    </a>
+
+    <a href="/restaurant/analytics/"
+       class="bg-white p-6 rounded-xl shadow text-center hover:shadow-lg">
+        <h2 class="text-xl font-bold">Analytics</h2>
+    </a>
+
+</div>
+
+</body>
+</html>

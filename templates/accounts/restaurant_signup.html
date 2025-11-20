@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Restaurant Signup - QuickBite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+
+<div class="bg-white shadow-lg p-8 rounded-xl w-full max-w-lg">
+
+    <h2 class="text-3xl font-bold text-center mb-6">Restaurant Signup</h2>
+
+    {% if messages %}
+        {% for msg in messages %}
+        <p class="bg-green-100 text-green-700 p-3 rounded mb-3">{{ msg }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Owner username -->
+        <label class="font-semibold">Username</label>
+        <input type="text" name="username" class="w-full border p-3 rounded-xl mb-4" required>
+
+        <!-- Email -->
+        <label class="font-semibold">Email</label>
+        <input type="email" name="email" class="w-full border p-3 rounded-xl mb-4" required>
+
+        <!-- Password -->
+        <label class="font-semibold">Password</label>
+        <input type="password" name="password" class="w-full border p-3 rounded-xl mb-4" required>
+
+        <!-- Restaurant Name -->
+        <label class="font-semibold">Restaurant Name</label>
+        <input type="text" name="name" class="w-full border p-3 rounded-xl mb-4" required>
+
+        <!-- Address -->
+        <label class="font-semibold">Address</label>
+        <textarea name="address" class="w-full border p-3 rounded-xl mb-4" rows="3" required></textarea>
+
+        <!-- Phone -->
+        <label class="font-semibold">Phone</label>
+        <input type="text" name="phone" class="w-full border p-3 rounded-xl mb-4" required>
+
+        <!-- Logo -->
+        <label class="font-semibold">Logo (optional)</label>
+        <input type="file" name="logo" class="w-full mb-4">
+
+        <button class="w-full bg-red-500 text-white py-3 rounded-xl text-lg hover:bg-red-600">
+            Create Account
+        </button>
+    </form>
+
+    <p class="text-center mt-4">
+        Already have an account?
+        <a href="/accounts/restaurant/login/" class="text-red-500 font-semibold">Login</a>
+    </p>
+
+</div>
+
+</body>
+</html>

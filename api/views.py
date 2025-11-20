@@ -3,10 +3,14 @@ from restaurants.models import Restaurant,Category,Item
 from .serializers import RestaurantSerializer,CategorySerializer,ItemSerializer,OrderSerializer
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated,AllowAny
 from orders.models import CartItem
 from orders.models import Order,OrderItem,CartItem
 from django.db import transaction
+import razorpay
+from django.conf import settings
+from rest_framework.views import APIView
+
 
 class RestaurantViewSet(viewsets.ReadOnlyModelViewSet):
     queryset=Restaurant.objects.filter(is_approved=True)
@@ -79,3 +83,49 @@ class OrderViewSet(viewsets.ModelViewSet):
 
         serializer=self.get_serializer(order)
         return Response(serializer.data,status=201)
+    
+    
+
+class PaymentView(APIView):
+    permission_classes=[IsAuthenticated]
+    def post(self,request):
+        amount=request.data.get('amount')
+
+        if not amount:
+            return Response({"error":"amount is required"}, status=400)
+        
+        amount=int(float(amount)**100)
+
+        client=razorpay.Client(
+            auth=(settings.RAZORPAY_KEY_ID,settings.RAZORPAY_KEY_SECRET)
+        )
+    
+        payment=client.order.create({
+            'amount':amount,
+            "currency":"INR",
+            "payment_capture":1
+        })
+        return Response({
+            "order_id":payment['id'],
+            "amount":amount,
+            "key":settings.RAZORPAY_KEY_ID
+        })
+    
+
+class PaymentSuccessView(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def post(self,request):
+        payment_id=request.data.get('payment_id')
+        order_id=request.data.get('order_id')
+        quickbiite_order_id=request.data.get('quickbite_order_id')
+
+        try:
+            order=order.objects.get(id=quickbiite_order_id,user=request.user)
+            order.payment_id=payment_id
+            order.status='accepted'
+            order.save()
+
+            return Response({'message':"payment successfull"})
+        except Order.DoesNotExist:
+            return Response({"error":"Order not found"},status=404)

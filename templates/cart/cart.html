@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Cart - QuickBite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-50">
+    <!-- put inside your <nav> ... -->
+<div class="flex items-center gap-4">
+  <!-- other nav items -->
+  <a href="{% url 'cart_page' %}" class="relative inline-flex items-center">
+    <!-- simple svg cart icon -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 7h12l-2-7M9 21a1 1 0 100-2 1 1 0 000 2zm6 0a1 1 0 100-2 1 1 0 000 2z"/>
+    </svg>
+
+    <!-- red badge -->
+ 
+    <a href="{% url 'cart_page' %}" class="relative inline-flex items-center">
+  <!-- cart svg -->
+  <svg class="h-6 w-6 text-gray-700" ...>...</svg>
+
+  <span id="cart-count-badge"
+        class="absolute -top-2 -right-3 bg-red-500 text-white text-xs font-semibold rounded-full px-2">
+    {{ cart_count }}
+  </span>
+</a>
+<div class="bg-white p-4 rounded-xl shadow max-w-3xl mx-auto">
+
+    {% for item in cart_items %}
+    <div class="flex flex-col sm:flex-row items-center justify-between border-b py-4 gap-4">
+        
+        <img src="{{ item.product.image.url }}" class="h-20 w-20 rounded object-cover">
+
+        <div class="flex-1">
+            <h3 class="font-semibold">{{ item.product.name }}</h3>
+            <p class="text-gray-500 text-sm">₹{{ item.product.price }} x {{ item.quantity }}</p>
+        </div>
+
+        <div class="flex gap-3 items-center">
+            <a href="/cart/increase/{{ item.product.id }}/"
+               class="bg-green-500 text-white px-3 py-1 rounded">+</a>
+
+            <span class="text-lg font-bold">{{ item.quantity }}</span>
+
+            <a href="/cart/decrease/{{ item.product.id }}/"
+               class="bg-yellow-500 text-white px-3 py-1 rounded">-</a>
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+
+</div>
+
+
+    <div class="max-w-5xl mx-auto mt-10">
+
+        <h1 class="text-3xl font-bold mb-6">Your Cart</h1>
+
+        {% if cart_items %}
+        <!-- CART LIST -->
+        <div class="bg-white shadow rounded-xl p-5">
+
+            {% for item in cart_items %}
+            <div class="flex items-center justify-between border-b py-4">
+
+                <!-- LEFT: IMAGE + NAME -->
+                <div class="flex items-center gap-4">
+                    <img src="{{ item.item.image.url }}" class="h-20 w-20 rounded-lg object-cover">
+
+                    <div>
+                        <h2 class="text-lg font-semibold">{{ item.item.name }}</h2>
+                        <p class="text-gray-500 text-sm">₹{{ item.item.price }}</p>
+                    </div>
+                </div>
+
+                <!-- RIGHT: QUANTITY + REMOVE -->
+                <div class="flex items-center gap-6">
+
+                    <!-- QUANTITY -->
+                    <form method="POST" action="{% url 'update_cart_quantity' item.id 'decrease' %}">
+                        {% csrf_token %}
+                        <button class="px-3 py-1 bg-gray-200 rounded">-</button>
+                    </form>
+
+                    <span class="font-bold">{{ item.quantity }}</span>
+
+                    <form method="POST" action="{% url 'update_cart_quantity' item.id 'increase' %}">
+                        {% csrf_token %}
+                        <button class="px-3 py-1 bg-gray-200 rounded">+</button>
+                    </form>
+
+                    <!-- REMOVE -->
+                    <form method="POST" action="{% url 'remove_from_cart' item.id %}">
+                        {% csrf_token %}
+                        <button class="text-red-500 font-semibold">Remove</button>
+                    </form>
+                </div>
+
+            </div>
+            {% endfor %}
+
+        </div>
+
+        <!-- TOTAL SECTION -->
+        <div class="bg-white shadow p-5 rounded-xl mt-6">
+
+            <div class="flex items-center justify-between mb-3">
+                <p class="text-lg font-semibold">Subtotal</p>
+                <p class="text-lg font-semibold">₹{{ total }}</p>
+            </div>
+
+            <a href="/checkout/"
+               class="block text-center bg-red-500 text-white py-3 rounded-xl text-lg font-bold hover:bg-red-600">
+                Proceed to Checkout
+            </a>
+        </div>
+
+        {% else %}
+            <p class="text-center text-gray-500 text-xl mt-20">Your cart is empty 😔</p>
+        {% endif %}
+
+    </div>
+
+</body>
+</html>
+
+<script>
+async function refreshCartCount() {
+  try {
+    const res = await fetch("{% url 'cart_count_api' %}");
+    const data = await res.json();
+    const badge = document.getElementById('cart-count-badge');
+    if (badge) badge.textContent = data.cart_count;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+// Example: when you use fetch to add to cart, call refreshCartCount() after success.
+// If you use plain form submit, page reload will update via context processor automatically.
+</script>

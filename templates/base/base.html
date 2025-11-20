@@ -1,0 +1,17 @@
+<!-- put inside your <nav> ... -->
+<div class="flex items-center gap-4">
+  <!-- other nav items -->
+  <a href="{% url 'cart_page' %}" class="relative inline-flex items-center">
+    <!-- simple svg cart icon -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 7h12l-2-7M9 21a1 1 0 100-2 1 1 0 000 2zm6 0a1 1 0 100-2 1 1 0 000 2z"/>
+    </svg>
+
+    <!-- red badge -->
+    <span id="cart-count-badge"
+          class="absolute -top-2 -right-3 bg-red-500 text-white text-xs font-semibold rounded-full px-2">
+      {{ cart_count }}
+    </span>
+  </a>
+</div>

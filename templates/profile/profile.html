@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Profile - QuickBite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen p-6">
+
+<div class="max-w-2xl mx-auto bg-white shadow-lg rounded-xl p-8">
+
+    <h1 class="text-3xl font-bold mb-6">Your Profile</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <!-- Username -->
+        <label class="block mb-3 font-semibold">Username</label>
+        <input type="text" name="username" value="{{ user.username }}"
+               class="w-full p-3 border rounded-xl mb-4" readonly>
+
+        <!-- Email -->
+        <label class="block mb-3 font-semibold">Email</label>
+        <input type="email" name="email" value="{{ user.email }}"
+               class="w-full p-3 border rounded-xl mb-4">
+
+        <!-- Phone -->
+        <label class="block mb-3 font-semibold">Phone</label>
+        <input type="text" name="phone" value="{{ user.phone }}"
+               class="w-full p-3 border rounded-xl mb-4">
+
+        <!-- Address -->
+        <label class="block mb-3 font-semibold">Address</label>
+        <textarea name="address" class="w-full p-3 border rounded-xl mb-4" rows="3">{{ user.address }}</textarea>
+
+        <!-- Save Button -->
+        <button class="w-full bg-red-500 text-white py-3 rounded-xl text-lg hover:bg-red-600">
+            Save Changes
+        </button>
+
+    </form>
+
+    <a href="/" class="block text-center mt-6 text-gray-500 hover:text-gray-700">
+        ← Back to Home
+    </a>
+
+</div>
+
+</body>
+</html>

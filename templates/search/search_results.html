@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Results - QuickBite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 p-6">
+
+<div class="max-w-5xl mx-auto">
+
+    <h1 class="text-3xl font-bold mb-6">
+        Search results for: <span class="text-red-500">{{ query }}</span>
+    </h1>
+
+    <!-- Restaurants Section -->
+    <h2 class="text-2xl font-semibold mb-4">Restaurants</h2>
+
+    {% if restaurants %}
+        <div class="grid grid-cols-3 gap-6 mb-10">
+        {% for r in restaurants %}
+            <div class="bg-white p-4 rounded-xl shadow">
+                <img src="{{ r.logo.url }}" class="h-40 w-full object-cover rounded-xl">
+
+                <h3 class="text-xl font-bold mt-3">{{ r.name }}</h3>
+                <p class="text-gray-500">{{ r.address }}</p>
+
+                <a href="/restaurant/{{ r.id }}/menu/"
+                   class="mt-3 block bg-red-500 text-white text-center py-2 rounded-xl">
+                    View Menu
+                </a>
+            </div>
+        {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-gray-500 mb-10">No matching restaurants found.</p>
+    {% endif %}
+
+
+    <!-- Food Items Section -->
+    <h2 class="text-2xl font-semibold mb-4">Food Items</h2>
+
+    {% if items %}
+        <div class="grid grid-cols-3 gap-6">
+        {% for item in items %}
+            <div class="bg-white p-4 rounded-xl shadow">
+
+                <img src="{{ item.image.url }}" class="h-40 w-full object-cover rounded-xl">
+
+                <h3 class="text-xl font-bold mt-3">{{ item.name }}</h3>
+                <p class="text-gray-500">{{ item.category.restaurant.name }}</p>
+
+                <p class="font-bold mt-2">₹{{ item.price }}</p>
+
+                <a href="/restaurant/{{ item.category.restaurant.id }}/menu/"
+                   class="mt-3 block bg-red-500 text-white text-center py-2 rounded-xl">
+                    View Restaurant
+                </a>
+            </div>
+        {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-gray-500">No matching food items found.</p>
+    {% endif %}
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Favourites - QuickBite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 p-6">
+
+<div class="max-w-5xl mx-auto">
+
+    <h1 class="text-3xl font-bold mb-6">Your Favourite Restaurants ❤️</h1>
+
+    {% if favourites %}
+        <div class="grid grid-cols-3 gap-6">
+
+            {% for fav in favourites %}
+            <div class="bg-white p-4 rounded-xl shadow">
+                <img src="{{ fav.restaurant.logo.url }}" class="h-40 w-full object-cover rounded-xl">
+
+                <h2 class="text-xl font-bold mt-3">{{ fav.restaurant.name }}</h2>
+                <p class="text-gray-500">{{ fav.restaurant.address }}</p>
+
+                <a href="/restaurant/{{ fav.restaurant.id }}/menu/"
+                   class="mt-3 block bg-red-500 text-white text-center py-2 rounded-xl">
+                    View Menu
+                </a>
+            </div>
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+        <p class="text-gray-600 text-lg">No favourite restaurants yet 😇</p>
+    {% endif %}
+
+</div>
+
+</body>
+</html>

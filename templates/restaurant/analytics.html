@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load json_script %}
+
+{{ day_labels|json_script:"labels-data" }}
+{{ last_7_days|json_script:"orders-data" }}
+    <title>Analytics Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="bg-gray-100 p-6">
+
+<div class="max-w-6xl mx-auto">
+
+    <h1 class="text-3xl font-bold mb-6">Analytics Dashboard</h1>
+
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-2 gap-6 mb-8">
+
+        <div class="bg-white p-6 rounded-xl shadow text-center">
+            <h2 class="text-xl font-semibold">Total Orders</h2>
+            <p class="text-4xl mt-2 font-bold">{{ total_orders }}</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow text-center">
+            <h2 class="text-xl font-semibold">Total Revenue</h2>
+            <p class="text-4xl mt-2 font-bold">₹{{ total_revenue }}</p>
+        </div>
+
+    </div>
+
+    <!-- Orders Last 7 Days Chart -->
+    <div class="bg-white p-6 rounded-xl shadow mb-8">
+        <h2 class="text-xl font-semibold mb-4">Orders in Last 7 Days</h2>
+        <canvas id="ordersChart"></canvas>
+    </div>
+
+    <!-- Top Items -->
+    <div class="bg-white p-6 rounded-xl shadow">
+        <h2 class="text-xl font-semibold mb-4">Top Selling Items</h2>
+
+        <table class="w-full">
+            <tr>
+                <th class="text-left pb-2">Item</th>
+                <th class="text-left pb-2">Sold</th>
+            </tr>
+
+            {% for item in top_items %}
+            <tr class="border-t">
+                <td class="py-2">{{ item.item__name }}</td>
+                <td class="py-2">{{ item.total_sold }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="2" class="py-2 text-gray-500">No sales yet.</td></tr>
+            {% endfor %}
+        </table>
+
+    </div>
+
+</div>
+
+{% load json_script %}
+
+{{ day_labels|json_script:"labels-data" }}
+{{ last_7_days|json_script:"orders-data" }}
+
+<script>
+    const labels = JSON.parse(document.getElementById("labels-data").textContent);
+    const orders = JSON.parse(document.getElementById("orders-data").textContent);
+
+    const ctx = document.getElementById('ordersChart').getContext('2d');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Orders',
+                data: orders,
+                borderWidth: 1
+            }]
+        }
+    });
+</script>
+
+
+</body>
+</html>
+
