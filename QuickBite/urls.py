@@ -6,9 +6,10 @@ from accounts.views import profile_page
 from restaurants.views  import home,menu_page,restaurant_settings,toggle_favourite,favourite_list,search,analytics_dashboard
 # from orders.views import add_to_cart
 from restaurants.views import restaurant_dashboard,manage_menu,add_category,add_item,manage_orders,accept_order,update_order_status,add_review
-from orders.views import cart_page,update_cart_quantity,remove_from_cart,checkout_page,track_order,order_success,order_history,cart_count_api,apply_coupon
-from delivery.views import rider_dashboard, pick_order, deliver_order
+from orders.views import cart_page,update_cart_quantity,remove_from_cart,checkout_page,track_order,order_success,order_history,cart_count_api,apply_coupon,get_notifiaction
+from delivery.views import rider_dashboard, pick_order, deliver_order,get_rider_location
 from restaurants.views import approval_list, approve_restaurant, reject_restaurant
+from restaurants.views import live_search
 
 
 
@@ -17,7 +18,9 @@ urlpatterns = [
     path('accounts/',include('accounts.urls')),
     path('api/',include('api.urls')),
     path('', home, name='home'),
-  
+    path("api/rider-location/<int:order_id>/", get_rider_location, name="get_rider_location"),
+
+
 
 path('cart/', cart_page, name='cart_page'),
 path('cart/update/<int:cart_item_id>/<str:action>/', update_cart_quantity, name='update_cart_quantity'),
@@ -53,6 +56,9 @@ path('admin/restaurant/approvals/', approval_list, name='restaurant_approval_lis
 path('admin/restaurant/approve/<int:id>/', approve_restaurant, name='approve_restaurant'),
 path('admin/restaurant/reject/<int:id>/', reject_restaurant, name='reject_restaurant'),
 path("apply-coupon/", apply_coupon, name="apply_coupon"),
+path("api/notifications/", get_notifiaction, name="get_notifications"),
+path("live-search/", live_search, name="live_search"),
+path("restaurant/<int:restaurant_id>/review/", add_review, name="add_review"),
 
 
 

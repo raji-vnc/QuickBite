@@ -13,6 +13,7 @@ from django.http import JsonResponse
 from django.db import models
 from django.db.models import Sum
 from django.utils import timezone
+from .models import Notification
 def cart_page(request):
     cart_items=CartItem.objects.filter(user=request.user)
     total=sum([item.total_price() for item in cart_items])
@@ -70,7 +71,7 @@ def order_success(request,order_id):
 @login_required
 def order_history(request):
     orders=Order.objects.filter(user=request.user).order_by("-created_at")
-    return render(request,"order/order_history.html",{"orders":orders})
+    return render(request,"order_success/order/order_history.html",{"orders":orders})
 
 @require_POST
 def add_to_cart(request,item_id):
@@ -133,3 +134,18 @@ def apply_coupon(request):
                             })
     except Coupon.DoesNotExist:
         return JsonResponse({"duccess":False,"message":"Invalid coupon code."})
+    
+def get_notifiaction(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({"notifications":[]})
+    notifs=Notification.objects.filter(user=request.user,is_read=False)
+    data=[
+        {
+            "id":n.id,
+            "message":n.message,
+            "time":n.created_at.strtime("%I:%M %p")
+        }
+        for n in notifs
+    ]
+    notifs.updated(is_read=True)
+    return JsonResponse({"notifications":data})

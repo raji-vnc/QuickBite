@@ -62,7 +62,7 @@ def restaurant_login(request):
             return redirect('restaurant_dashboard')
         else:
             messages.error(request,"invalid credentials or Not a Restaurant Account")
-        return render(request,'accounts/restaurant_login.html')
+    return render(request,'accounts/restaurant_login.html')
     
 def rider_login(request):
     if request.method=="POST":

@@ -35,9 +35,13 @@ class Item(models.Model):
         return self.name
 class Review(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)
+    restaurant=models.ForeignKey('restaurants.Restaurant',default=False,on_delete=models.CASCADE)
     item=models.ForeignKey(Item,on_delete=models.CASCADE)
     rating=models.IntegerField(choices=[(1,1),(2,2),(3,3),(4,4),(5,5)])
     comment=models.TextField(blank=True)
+    image1=models.ImageField(upload_to='review_photos/',null=True,blank=True)
+    image2=models.ImageField(upload_to='review_photos/',null=True,blank=True)
+    image3=models.ImageField(upload_to='review_photos/',null=True,blank=True)
     created_at=models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

@@ -1,0 +1,44 @@
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <label class="font-bold">Rating</label>
+    <select name="rating" class="border p-3 rounded-xl w-full mb-4">
+        <option value="5">⭐⭐⭐⭐⭐</option>
+        <option value="4">⭐⭐⭐⭐</option>
+        <option value="3">⭐⭐⭐</option>
+        <option value="2">⭐⭐</option>
+        <option value="1">⭐</option>
+    </select>
+
+    <label class="font-bold">Comment</label>
+    <textarea name="comment" rows="4" class="border p-3 rounded-xl w-full mb-4"></textarea>
+
+    <label class="font-bold">Upload Photos (max 3)</label>
+    <input type="file" name="image1" class="w-full border p-2 rounded-xl mb-2">
+    <input type="file" name="image2" class="w-full border p-2 rounded-xl mb-2">
+    <input type="file" name="image3" class="w-full border p-2 rounded-xl mb-4">
+
+    <button class="bg-red-500 text-white py-3 rounded-xl w-full text-lg">
+        Submit Review
+    </button>
+</form>
+<div class="mt-4 grid grid-cols-3 gap-3">
+    {% if review.image1 %}
+        <img src="{{ review.image1.url }}" 
+             class="h-28 w-full object-cover rounded-xl cursor-pointer"
+             onclick="openImage('{{ review.image1.url }}')">
+    {% endif %}
+
+    {% if review.image2 %}
+        <img src="{{ review.image2.url }}" 
+             class="h-28 w-full object-cover rounded-xl cursor-pointer"
+             onclick="openImage('{{ review.image2.url }}')">
+    {% endif %}
+
+    {% if review.image3 %}
+        <img src="{{ review.image3.url }}" 
+             class="h-28 w-full object-cover rounded-xl cursor-pointer"
+             onclick="openImage('{{ review.image3.url }}')">
+    {% endif %}
+</div>
+

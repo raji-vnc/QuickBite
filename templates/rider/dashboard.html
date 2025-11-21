@@ -72,3 +72,18 @@
 
 </body>
 </html>
+<script>
+function sendLocationToServer() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((pos) => {
+            let lat = pos.coords.latitude;
+            let lng = pos.coords.longitude;
+
+            fetch(`/rider/update-location/?lat=${lat}&lng=${lng}`);
+        });
+    }
+}
+
+// Send every 5 seconds
+setInterval(sendLocationToServer, 5000);
+</script>

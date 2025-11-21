@@ -7,6 +7,8 @@ from django.db.models import Sum,Count
 import datetime
 from restaurants.models import Review,Restaurant,FavouritRestaurant
 from delivery.utils import auto_assign_rider
+from django.http import JsonResponse
+from django.db.models import Q
 from django.contrib.admin.views.decorators import staff_member_required
 def home(request):
     restaurants=Restaurant.objects.filter(is_approved=True)
@@ -249,3 +251,53 @@ def approve_restaurant(request,id):
 def reject_restaurant(request,id):
     Restaurant.objects.get(id=id).delete()
     return redirect('restaurant_approval_list')
+
+
+def live_search(request):
+    query=request.GET.get("q","").strip()
+    if query=="":
+        return JsonResponse({"results":[]})
+    
+    restaurants=Restaurant.objects.filter(
+        Q(name__icontains=query),
+        is_approved=True
+    )[:5]
+
+    items=Item.objects.filter(
+        Q(name__icontains=query) |
+        Q(description__icontains=query)
+    )[:5]
+
+    results=[]
+
+    for r in restaurants:
+        results.append({
+            "type":"item",
+            "name":r.name,
+            "id":r.id
+        })
+    for i in items:
+        results.append({
+            "type":"item",
+            "name":i.name,
+            "restaurant_id":i.category.restaurant.id
+        })
+    return JsonResponse({"results":results})
+def add_review(request,restaurant_id):
+    if request.method== "POST":
+        rating=request.POST.get("rating")
+        comment=request.POST.get("comment")
+
+        image1=request.FILES.get('image1')
+        image2=request.FILES.get("image2")
+        image3=request.FILES.get("image3")
+    Review.objects.create(
+        user=request.user,
+        restaurant_id=restaurant_id,
+        rating=rating,
+        image1=image1,
+        image2=image2,
+        image3=image3,
+    )
+
+    return redirect("restaurant_menu",restaurant_id=restaurant_id)

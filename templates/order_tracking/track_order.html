@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Live Rider Tracking</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Maps -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY"></script>
+</head>
+
+<body class="p-4">
+
+<h1 class="text-2xl font-bold mb-4">Track Your Rider</h1>
+
+<div id="map" style="height: 500px;" class="rounded-xl shadow"></div>
+
+<script>
+let map;
+let marker;
+
+function initMap() {
+    map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 15,
+        center: { lat: { restaurant_lat }}, lng: { restaurant_lng }} 
+    );
+
+    marker = new google.maps.Marker({
+        position: { lat: { restaurant_lat }}, lng: { restaurant_lng }} ,
+       { map: map,
+        title: "Rider Location",}
+    );
+}
+
+// Fetch Rider Latest Location Every 3s
+function updateRiderLocation() {
+    fetch("/api/rider-location/{{ order_id }}/")
+        .then(res => res.json())
+        .then(data => {
+            if (!data || !data.lat) return;
+
+            let newPos = { lat: data.lat, lng: data.lng };
+            marker.setPosition(newPos);
+            map.panTo(newPos);
+        });
+}
+
+initMap();
+setInterval(updateRiderLocation, 3000);
+</script>
+
+</body>
+</html>
