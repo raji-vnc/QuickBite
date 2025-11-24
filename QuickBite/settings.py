@@ -131,8 +131,7 @@ REST_FRAMEWORK = {
     ]
 }
 
-RAZORPAY_KEY_ID = "key_id,key_secret"
-RAZORPAY_KEY_SECRET = "rzp_test_RgkWVsJCySoPiP,NDZCL9JjWcJO5UF1DpNurTYZ"
+
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
